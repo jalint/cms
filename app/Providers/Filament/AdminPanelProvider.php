@@ -43,6 +43,17 @@ class AdminPanelProvider extends PanelProvider
                // Widgets\FilamentInfoWidget::class,
             ])
             ->profile()
+            ->plugins([
+                \Awcodes\Curator\CuratorPlugin::make()
+                    ->label('Media')
+                    ->pluralLabel('Media')
+                    ->navigationIcon('heroicon-o-photo')
+                    ->navigationGroup('Content')
+                    ->navigationSort(3)
+                    ->navigationCountBadge()
+                    ->defaultListView('grid' || 'list'),
+                    
+            ])
            // ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->middleware([
                 EncryptCookies::class,
