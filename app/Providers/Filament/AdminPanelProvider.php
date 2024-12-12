@@ -18,6 +18,8 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
+
 
 
 class AdminPanelProvider extends PanelProvider
@@ -53,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationCountBadge()
                     ->defaultListView('grid' || 'list'),
                     
-            ])
+            ]) ->plugin(FilamentSpatieLaravelBackupPlugin::make())
            // ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->middleware([
                 EncryptCookies::class,
