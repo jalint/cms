@@ -43,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
                // Widgets\FilamentInfoWidget::class,
             ])
             ->profile()
-            ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
+           // ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
