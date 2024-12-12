@@ -19,6 +19,8 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
+use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
+
 
 
 
@@ -56,6 +58,7 @@ class AdminPanelProvider extends PanelProvider
                     ->defaultListView('grid' || 'list'),
                     
             ]) ->plugin(FilamentSpatieLaravelBackupPlugin::make())
+            ->plugin(FilamentSpatieLaravelHealthPlugin::make())
            // ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->middleware([
                 EncryptCookies::class,
