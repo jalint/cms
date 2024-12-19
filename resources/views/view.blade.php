@@ -74,7 +74,7 @@
               
                 <div class="container bg-white ">
                     <div class="row blog-item px-3 pb-5">
-                        <div class="">
+                        <div class="text-center">
                             <img class="img-fluid mb-4 mb-md-0" src="http://localhost:8000/storage/{{$post->image_url}}" alt="Image">
                             <h3 class="mt-md-4 px-md-3 mb-2 py-2 bg-white font-weight-bold">{{$post->title}}</h3>
                         </div>
@@ -91,7 +91,10 @@
                           
                         </div>
                     </div>
-                    
+                    <div>
+                        <h2 class="bg-white font-weight-bold">Comments</h2>
+                    </div>
+                </div>
                 <!-- Blog List End -->
                 
                 
