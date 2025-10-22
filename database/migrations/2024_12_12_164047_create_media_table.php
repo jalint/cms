@@ -11,6 +11,9 @@ return new class extends Migration
     {
         Schema::create(app(config('curator.model'))->getTable(), function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')
+                  ->constrained('categories')
+                  ->cascadeOnUpdate();
             $table->string('disk')->default('public');
             $table->string('directory')->default('media');
             $table->string('visibility')->default('public');
@@ -27,6 +30,7 @@ return new class extends Migration
             $table->text('caption')->nullable();
             $table->text('exif')->nullable();
             $table->longText('curations')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

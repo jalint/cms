@@ -1,0 +1,44 @@
+# .phpactor.yml
+language_server_worse_reflection:
+  enable_workspace: true
+  enable_cache: true
+  cache_lifetime: 600
+
+language_server_completion:
+  completion_label_format: detail
+
+language_server_diagnostics:
+  enable: true
+  providers:
+    worse:
+      diagnostics:
+        # Nonaktifkan warning docblock return type (biasa di Eloquent relasi)
+        docblock_missing_return_type: false
+
+        # Nonaktifkan warning docblock param type (biasanya di controller)
+        docblock_missing_param_type: false
+
+        # Nonaktifkan missing property docblock
+        missing_property_docblock: false
+
+        # Nonaktifkan phpdoc type mismatch (karena sering false positive di Laravel macro / magic)
+        invalid_docblock_type: false
+
+        # Nonaktifkan unresolved import warnings
+        unresolved_import: false
+
+language_server_phpstan:
+  enable: true
+  # Gunakan tingkat 5, seimbang antara ketat dan realistis untuk Laravel
+  level: 5
+  memory_limit: 512M
+
+rpc:
+  enable_logging: false
+
+indexer:
+  excluded_paths:
+    - vendor∏
+    - storage
+    - bootstrap/cache
+    - node_modules

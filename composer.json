@@ -7,6 +7,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "afsakar/filament-translate-action": "^1.2",
+        "aliziodev/laravel-indonesia-regions": "^1.0",
         "althinect/filament-spatie-roles-permissions": "^2.2",
         "awcodes/filament-curator": "^3.6",
         "croustibat/filament-jobs-monitor": "^2.5",

@@ -1,0 +1,361 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Http\Controllers\Controller;
+use App\Models\CompanyPolicy;
+use App\Models\CompanyProfile;
+use App\Models\CustomerDistribution;
+use App\Models\CustomerDistributionData;
+use App\Models\CustomerDistributionLegend;
+use App\Models\HomepageService;
+use App\Models\LegalDocument;
+use App\Models\LegalDocumentDetail;
+use App\Models\Milestone;
+use App\Models\News;
+use App\Models\OrganizationalStructure;
+use App\Models\Parameter;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+class ContentManagementSystemController extends Controller
+{
+    public function index()
+    {
+        $Home_Banner = 1;
+
+        $Struktur_Organisasi_Banner = 3;
+        $Legalitas_Banner = 4;
+        $Jenis_Layanan_Banner = 5;
+        $Direktori_Banner = 6;
+        $Karir_Banner = 7;
+        $Klien_Kami_Banner = 8;
+        $Footer_Banner = 9;
+        $Tentang_Perusahaan_Photo = 10;
+        $Logo_Sertifikasi = 11;
+
+        $media = DB::table('media')
+            ->join('categories', 'media.category_id', '=', 'categories.id')
+            ->select('media.id', 'path', 'categories.name as type')
+            ->whereIn('category_id', [
+                $Home_Banner,
+                $Logo_Sertifikasi,
+                $Footer_Banner,
+            ])
+            ->get();
+
+        $highlightNews = DB::table('news')
+            ->select([
+                'id',
+                'title_id',
+                'title_en',
+                'content_id',
+                'content_en',
+                'created_at',
+            ])
+            ->where('is_highlight', 1)
+            ->get();
+
+        $testimonials = DB::table('homepage_testimonials')
+            ->select([
+                'id',
+                'photo',
+                'customer_logo',
+                'name',
+                'description_id',
+                'description_en',
+            ])
+            ->get();
+
+        $services = HomepageService::query()
+            ->with([
+                'homepagecards' => function ($query) {
+                    $query->where('is_active', 1);
+                },
+            ])
+            ->get();
+
+        $randomNews = DB::table('news')
+            ->select(['id', 'title_id', 'title_en', 'created_at'])
+            ->where('is_highlight', 1)
+            ->inRandomOrder()
+            ->get();
+
+        return response()->json([
+            'media' => $media,
+            'highlight_news' => $highlightNews,
+            'testimonials' => $testimonials,
+            'random_news' => $randomNews,
+            'services' => $services,
+            'random_news' => $randomNews,
+        ]);
+    }
+
+    public function homepageServices()
+    {
+        $Logo_Klien = 12;
+
+        $services = HomepageService::query()
+            ->with([
+                'homepagecards' => function ($query) {
+                    $query->where('is_active', 1);
+                },
+            ])
+            ->whereIn('position', [1, 2, 3, 4])
+            ->get();
+
+        $media = DB::table('media')
+            ->join('categories', 'media.category_id', '=', 'categories.id')
+            ->select('media.id', 'path', 'categories.name as type')
+            ->where('category_id', $Logo_Klien)
+            ->get();
+
+        // Sisipkan media ke dalam data dengan position = 4
+        $services = $services->map(function ($item) use ($media) {
+            if ($item->position == 4) {
+                $item->images = $media;
+            }
+
+            return $item;
+        });
+
+        return response()->json($services);
+    }
+
+    // highlight,popular,random,latest
+    public function news(Request $request)
+    {
+        $filter = $request->input('filter');
+        $q = $request->input('q');
+
+        // latest: ambil 4 berita terbaru saja
+        if ($filter === 'latest') {
+            $news = News::query()
+                ->latest()
+                ->limit(4)
+                ->get();
+
+            return response()->json($news);
+        }
+
+        // filter lain tetap seperti semula
+        $news = News::query()
+            ->when($filter === 'highlight', fn ($query) => $query->where('is_highlight', 1))
+            ->when($filter === 'popular', fn ($query) => $query->orderByDesc('view_count')->limit(5))
+            ->when($filter === 'random', fn ($query) => $query->inRandomOrder())
+            ->when($q, fn ($query) => $query->where('title_id', 'like', "%{$q}%"))
+            ->paginate();
+
+        return response()->json($news);
+    }
+
+    public function contactUs()
+    {
+        $FOOTER_BANNER_CATEGORY_ID = 9;
+        $FOOTER_POSITION = 7;
+
+        $media = Cache::remember(
+            "media.footer_banner.{$FOOTER_BANNER_CATEGORY_ID}",
+            300,
+            function () use ($FOOTER_BANNER_CATEGORY_ID) {
+                return DB::table('media')
+                    ->select('path')
+                    ->where('category_id', $FOOTER_BANNER_CATEGORY_ID)
+                    ->orderByDesc('id') // pastikan ambil yang terbaru kalau lebih dari satu
+                    ->first();
+            },
+        );
+
+        $service = Cache::remember(
+            "homepage_service.footer.{$FOOTER_POSITION}",
+            300,
+            function () use ($FOOTER_POSITION) {
+                return DB::table('homepage_services')
+                    ->select('badge_id', 'badge_en', 'title_id', 'title_en')
+                    ->where('position', $FOOTER_POSITION)
+                    ->first();
+            },
+        );
+
+        if (!$media || !$service) {
+            return response()->json(
+                [
+                    'message' => 'Footer media atau service tidak ditemukan.',
+                ],
+                Response::HTTP_NOT_FOUND,
+            );
+        }
+
+        return response()->json([
+            'image' => $media->path
+                ? env('APP_URL').Storage::url($media->path)
+                : null,
+            'badge_id' => $service->badge_id,
+            'badge_en' => $service->badge_en,
+            'title_id' => $service->title_id,
+            'title_en' => $service->title_en,
+        ]);
+    }
+
+    public function testimonials()
+    {
+        $TESTIMONIAL_POSITION = 5;
+
+        $testimonailService = DB::table('homepage_services')
+            ->select(
+                'badge_id',
+                'badge_en',
+                'title_id',
+                'title_en',
+                'description_id',
+                'description_en',
+            )
+            ->where('position', $TESTIMONIAL_POSITION)
+            ->first();
+
+        $testimonials = DB::table('homepage_testimonials')
+            ->select([
+                'id',
+                'photo',
+                'customer_logo',
+                'name',
+                'description_id',
+                'description_en',
+                'job_title',
+            ])
+            ->where('is_active', 1)
+            ->get();
+
+        $testimonailService->testimonials = [$testimonials];
+
+        return response()->json($testimonailService);
+    }
+
+    public function latestNews()
+    {
+        $LATEST_NEWS = 6;
+        $Logo_Sertifikasi = 11;
+
+        $latestNews = DB::table('homepage_services')
+            ->select(
+                'badge_id',
+                'badge_en',
+                'title_id',
+                'title_en',
+                'description_id',
+                'description_en',
+            )
+            ->where('position', $LATEST_NEWS)
+            ->first();
+
+        $logoSertifikasi = DB::table('media')
+            ->join('categories', 'media.category_id', '=', 'categories.id')
+            ->select('media.id', 'path', 'categories.name as type')
+            ->where('category_id', $Logo_Sertifikasi)
+            ->get();
+
+        $latestNews->logo_setifikasi = $logoSertifikasi ?? null;
+
+        return response()->json($latestNews);
+    }
+
+    /**
+     * Company Profil.
+     */
+    public function companyProfiles()
+    {
+        // Ambil profil perusahaan pertama (atau sesuaikan dengan kebutuhan)
+        $companyProfile = CompanyProfile::first();
+
+        $profile_perusahaan_banner = 2;
+
+        // Ambil banner yang sesuai
+        $banner = DB::table('media')
+            ->select('id', 'path')
+            ->where('category_id', $profile_perusahaan_banner)
+            ->first();
+
+        // Tambahkan atribut baru secara dinamis
+        $companyProfile->image = $banner->path;
+
+        return response()->json($companyProfile);
+    }
+
+    public function milestones()
+    {
+        $milestones = Milestone::query()->with('milestoneDetails')->first();
+
+        return response()->json($milestones);
+    }
+
+    public function parameterCharts()
+    {
+        $parameters = Parameter::query()->with('parameterValues')->first();
+
+        return response()->json($parameters);
+    }
+
+    public function customerDistributions()
+    {
+        $customerDistributions = CustomerDistribution::query()->first();
+
+        $customerDistributions->map_legend = CustomerDistributionLegend::query()
+            ->select(['id', 'hex', 'legenda'])
+            ->get();
+
+        return response()->json($customerDistributions);
+    }
+
+    public function customerDistributionData()
+    {
+        $data = CustomerDistributionData::query()
+            ->with('customerDistributionLegend')
+            ->get();
+
+        return response()->json($data);
+    }
+
+    public function organizationStructures()
+    {
+        $data = OrganizationalStructure::query()->first();
+        $Struktur_Organisasi_Banner = 3;
+
+        $strukturBanner = DB::table('media')
+            ->select('media.id', 'path')
+            ->where('category_id', $Struktur_Organisasi_Banner)
+            ->first();
+
+        $data->image = $strukturBanner->path ?? null;
+
+        return response()->json($data);
+    }
+
+    public function companyPolicies()
+    {
+        $data = CompanyPolicy::query()->with('companyPolicyDetails')->first();
+
+        return response()->json($data);
+    }
+
+    public function legalDocumentCategory(Request $request)
+    {
+        $data = LegalDocument::query()->select(['id', 'title_id', 'title_en'])->get();
+
+        return response()->json($data);
+    }
+
+    public function legalDocuments(Request $request)
+    {
+        $q = $request->input('q');
+
+        $data = LegalDocumentDetail::query()
+          ->where('legal_document_id', $request->category_id)
+          ->when($q, fn ($query) => $query->where('title_id', 'like', "%{$q}%"))
+          ->paginate();
+
+        return response()->json($data);
+    }
+}

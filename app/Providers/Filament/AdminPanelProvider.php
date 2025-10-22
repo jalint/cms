@@ -32,8 +32,8 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id('dashboard')
-            ->path('dashboard')
+            ->id('admin')
+            ->path('admin')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -41,7 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                // Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
@@ -59,11 +59,12 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationCountBadge()
                     ->defaultListView('grid' || 'list'),
                     
-            ]) ->plugin(FilamentSpatieLaravelBackupPlugin::make())
-            ->plugin(FilamentSpatieLaravelHealthPlugin::make())
-            ->plugins([
-                FilamentJobsMonitorPlugin::make()
             ])
+            // ->plugin(FilamentSpatieLaravelBackupPlugin::make())
+            // ->plugin(FilamentSpatieLaravelHealthPlugin::make())
+            // ->plugins([
+            //     FilamentJobsMonitorPlugin::make()
+            // ])
            // ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->middleware([
                 EncryptCookies::class,
