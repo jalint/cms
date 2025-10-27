@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Career;
 use App\Models\CompanyPolicy;
 use App\Models\CompanyProfile;
 use App\Models\CustomerDistribution;
@@ -150,6 +151,16 @@ class ContentManagementSystemController extends Controller
             ->paginate();
 
         return response()->json($news);
+    }
+
+    public function newsDetails(Request $request)
+    {
+        $data = DB::table('news')
+                ->where('slug_id', $request->slug)
+                ->orWhere('slug_en', $request->slug)
+                ->first();
+
+        return response()->json($data);
     }
 
     public function contactUs()
@@ -350,11 +361,36 @@ class ContentManagementSystemController extends Controller
     public function legalDocuments(Request $request)
     {
         $q = $request->input('q');
+        $sort = $request->sort;
+
+        if ($request->filter === 'highlight') {
+            $data = LegalDocumentDetail::query()
+                ->where('is_highlight', 1)
+                ->limit(4)
+                ->get();
+
+            return response()->json($data);
+        }
 
         $data = LegalDocumentDetail::query()
           ->where('legal_document_id', $request->category_id)
           ->when($q, fn ($query) => $query->where('title_id', 'like', "%{$q}%"))
+          ->when($request->sort, function ($query) use ($sort) {
+              $query->orderBy('created_at', $sort);
+          })
           ->paginate();
+
+        return response()->json($data);
+    }
+
+    public function careers(Request $request)
+    {
+        $q = $request->input('q');
+        $data = Career::query()
+           ->when($q, fn ($query) => $query->where('field_name_id', 'like', "%{$q}%")
+                     ->orWhere('major_id', 'like', "%{$q}%")
+           )
+           ->paginate();
 
         return response()->json($data);
     }

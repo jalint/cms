@@ -15,27 +15,27 @@ class MilestoneResource extends Resource
 {
     protected static ?string $model = Milestone::class;
 
-    protected static ?string $navigationIcon = "heroicon-o-arrow-trending-up";
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-trending-up';
 
-    protected static ?string $navigationGroup = "About Us";
+    protected static ?string $navigationGroup = 'About Us';
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make("title_id")
-                ->label("Title (ID)")
+            Forms\Components\TextInput::make('title_id')
+                ->label('Title (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("title_en")
-                ->label("Title (EN)")
+            Forms\Components\TextInput::make('title_en')
+                ->label('Title (EN)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("description_id")
-                ->label("Description (ID)")
+            Forms\Components\TextInput::make('description_id')
+                ->label('Description (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("description_en")
-                ->label("Description (EN)")
+            Forms\Components\TextInput::make('description_en')
+                ->label('Description (EN)')
                 ->required()
                 ->maxLength(255),
         ]);
@@ -45,10 +45,10 @@ class MilestoneResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make("title_id")->searchable(),
-                Tables\Columns\TextColumn::make("title_en")->searchable(),
-                Tables\Columns\TextColumn::make("description_id")->searchable(),
-                Tables\Columns\TextColumn::make("description_en")->searchable(),
+                Tables\Columns\TextColumn::make('title_id')->label('Title (ID)')->searchable(),
+                Tables\Columns\TextColumn::make('title_en')->label('Title (EN)')->searchable(),
+                Tables\Columns\TextColumn::make('description_id')->label('Description (ID)')->searchable(),
+                Tables\Columns\TextColumn::make('description_en')->label('Description (EN)')->searchable(),
             ])
             ->filters([])
             ->actions([Tables\Actions\EditAction::make()])
@@ -67,9 +67,9 @@ class MilestoneResource extends Resource
     public static function getPages(): array
     {
         return [
-            "index" => Pages\ListMilestones::route("/"),
-            "create" => Pages\CreateMilestone::route("/create"),
-            "edit" => Pages\EditMilestone::route("/{record}/edit"),
+            'index' => Pages\ListMilestones::route('/'),
+            'create' => Pages\CreateMilestone::route('/create'),
+            'edit' => Pages\EditMilestone::route('/{record}/edit'),
         ];
     }
 }
