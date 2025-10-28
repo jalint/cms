@@ -13,7 +13,7 @@ Route::get('homepage/testimonials', [ContentManagementSystemController::class, '
 Route::get('homepage/services', [ContentManagementSystemController::class, 'homepageServices']);
 Route::get('homepage/latest-news', [ContentManagementSystemController::class, 'latestNews']);
 Route::get('careers', [ContentManagementSystemController::class, 'careers']);
-Route::get('careers/{career}', [ContentManagementSystemController::class, 'careerDetails']);
+Route::get('careers/{slug}', [ContentManagementSystemController::class, 'careerDetails']);
 
 /*
  * Company Profile

@@ -53,6 +53,7 @@ class CareerResource extends Resource
                 ->maxLength(255),
             Forms\Components\TextInput::make('location')
                 ->label('Location')
+                ->required()
                 ->maxLength(255),
             Forms\Components\TextInput::make('slug_id')
                ->label('Slug')

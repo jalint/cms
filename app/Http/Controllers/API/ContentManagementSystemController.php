@@ -399,7 +399,7 @@ class ContentManagementSystemController extends Controller
         return response()->json($data);
     }
 
-    public function careerDetails(Request $request, $id)
+    public function careerDetails(Request $request)
     {
         $data = Career::query()
                 ->select(['id', 'slug_id', 'slug_en', 'field_name_id', 'field_name_en', 'description_id', 'description_en', 'google_form_link'])
