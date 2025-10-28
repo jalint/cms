@@ -10,6 +10,8 @@ use App\Models\CompanyProfile;
 use App\Models\CustomerDistribution;
 use App\Models\CustomerDistributionData;
 use App\Models\CustomerDistributionLegend;
+use App\Models\Directory;
+use App\Models\DirectoryDetail;
 use App\Models\HomepageService;
 use App\Models\LegalDocument;
 use App\Models\LegalDocumentDetail;
@@ -381,7 +383,7 @@ class ContentManagementSystemController extends Controller
           ->when($request->sort, function ($query) use ($sort) {
               $query->orderBy('created_at', $sort);
           })
-          ->paginate('8');
+          ->paginate(8);
 
         return response()->json($data);
     }
@@ -431,5 +433,28 @@ class ContentManagementSystemController extends Controller
             'page_settings' => $pageSettings,
             'clients' => $clients,
         ]);
+    }
+
+    public function directoryCategories(Request $request)
+    {
+        $data = Directory::query()->get();
+
+        return response()->json($data);
+    }
+
+    public function directories(Request $request)
+    {
+        $q = $request->input('q');
+        $sort = $request->sort;
+
+        $data = DirectoryDetail::query()
+          ->where('directory_id', $request->directory_id)
+          ->when($q, fn ($query) => $query->where('title_id', 'like', "%{$q}%"))
+          ->when($request->sort, function ($query) use ($sort) {
+              $query->orderBy('created_at', $sort);
+          })
+          ->paginate(8);
+
+        return response()->json($data);
     }
 }

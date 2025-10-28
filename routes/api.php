@@ -32,3 +32,9 @@ Route::get('company-profiles/legals', [ContentManagementSystemController::class,
  * Our Clients
  */
 Route::get('clients', [ContentManagementSystemController::class, 'ourClients']);
+
+/*
+ * Directory
+ */
+Route::get('directories/categories', [ContentManagementSystemController::class, 'directoryCategories']);
+Route::get('directories', [ContentManagementSystemController::class, 'directories']);
