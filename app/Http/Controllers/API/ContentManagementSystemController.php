@@ -302,7 +302,11 @@ class ContentManagementSystemController extends Controller
 
     public function milestones()
     {
-        $milestones = Milestone::query()->with('milestoneDetails')->first();
+        $milestones = Milestone::query()
+         ->with(['milestoneDetails' => function ($query) {
+             $query->orderBy('year', 'desc');
+         }])
+         ->first();
 
         return response()->json($milestones);
     }
