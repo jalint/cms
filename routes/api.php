@@ -13,6 +13,7 @@ Route::get('homepage/testimonials', [ContentManagementSystemController::class, '
 Route::get('homepage/services', [ContentManagementSystemController::class, 'homepageServices']);
 Route::get('homepage/latest-news', [ContentManagementSystemController::class, 'latestNews']);
 Route::get('careers', [ContentManagementSystemController::class, 'careers']);
+Route::get('careers/{career}', [ContentManagementSystemController::class, 'careerDetails']);
 
 /*
  * Company Profile
@@ -26,3 +27,8 @@ Route::get('company-profiles/organization-structures', [ContentManagementSystemC
 Route::get('company-profiles/policies', [ContentManagementSystemController::class, 'companyPolicies']);
 Route::get('company-profiles/legals/category', [ContentManagementSystemController::class, 'legalDocumentCategory']);
 Route::get('company-profiles/legals', [ContentManagementSystemController::class, 'legalDocuments']);
+
+/*
+ * Our Clients
+ */
+Route::get('clients', [ContentManagementSystemController::class, 'ourClients']);

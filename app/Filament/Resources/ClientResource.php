@@ -46,6 +46,7 @@ class ClientResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description_en')
                     ->label('Description (EN)')
+                    ->translatable()
                     ->required()
                     ->maxLength(255),
             ]);

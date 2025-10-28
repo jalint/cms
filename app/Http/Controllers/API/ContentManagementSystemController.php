@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Career;
+use App\Models\Client;
 use App\Models\CompanyPolicy;
 use App\Models\CompanyProfile;
 use App\Models\CustomerDistribution;
@@ -16,6 +17,7 @@ use App\Models\Milestone;
 use App\Models\News;
 use App\Models\OrganizationalStructure;
 use App\Models\Parameter;
+use App\Models\Sector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +35,7 @@ class ContentManagementSystemController extends Controller
         $Jenis_Layanan_Banner = 5;
         $Direktori_Banner = 6;
         $Karir_Banner = 7;
-        $Klien_Kami_Banner = 8;
+
         $Footer_Banner = 9;
         $Tentang_Perusahaan_Photo = 10;
         $Logo_Sertifikasi = 11;
@@ -131,6 +133,7 @@ class ContentManagementSystemController extends Controller
     {
         $filter = $request->input('filter');
         $q = $request->input('q');
+        $perPage = $request->input('per_page', 15);
 
         // latest: ambil 4 berita terbaru saja
         if ($filter === 'latest') {
@@ -148,7 +151,7 @@ class ContentManagementSystemController extends Controller
             ->when($filter === 'popular', fn ($query) => $query->orderByDesc('view_count')->limit(5))
             ->when($filter === 'random', fn ($query) => $query->inRandomOrder())
             ->when($q, fn ($query) => $query->where('title_id', 'like', "%{$q}%"))
-            ->paginate();
+            ->paginate($perPage);
 
         return response()->json($news);
     }
@@ -378,7 +381,7 @@ class ContentManagementSystemController extends Controller
           ->when($request->sort, function ($query) use ($sort) {
               $query->orderBy('created_at', $sort);
           })
-          ->paginate();
+          ->paginate('8');
 
         return response()->json($data);
     }
@@ -387,11 +390,45 @@ class ContentManagementSystemController extends Controller
     {
         $q = $request->input('q');
         $data = Career::query()
+            ->select(['id', 'field_name_id', 'field_name_en', 'major_id', 'major_en', 'employment_status', 'location'])
            ->when($q, fn ($query) => $query->where('field_name_id', 'like', "%{$q}%")
                      ->orWhere('major_id', 'like', "%{$q}%")
            )
            ->paginate();
 
         return response()->json($data);
+    }
+
+    public function careerDetails(Request $request, $id)
+    {
+        $data = Career::query()
+            ->select(['id', 'field_name_id', 'field_name_en', 'description_id', 'description_en', 'google_form_link'])
+            ->where('id', $id)
+           ->first();
+
+        return response()->json($data);
+    }
+
+    public function ourClients()
+    {
+        $Klien_Kami_Banner = 8;
+
+        // Ambil banner yang sesuai
+        $banner = DB::table('media')
+            ->select('id', 'path')
+            ->where('category_id', $Klien_Kami_Banner)
+            ->first();
+
+        $pageSettings = Client::query()->first();
+
+        $clients = Sector::query()->with(['corporateGroups' => function ($query) {
+            $query->with('companies');
+        }])->get();
+
+        return response()->json([
+            'banner' => $banner,
+            'page_settings' => $pageSettings,
+            'clients' => $clients,
+        ]);
     }
 }
