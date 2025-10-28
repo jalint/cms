@@ -390,7 +390,7 @@ class ContentManagementSystemController extends Controller
     {
         $q = $request->input('q');
         $data = Career::query()
-            ->select(['id', 'field_name_id', 'field_name_en', 'major_id', 'major_en', 'employment_status', 'location'])
+            ->select(['id', 'field_name_id', 'field_name_en', 'major_id', 'major_en', 'employment_status', 'location', 'slug_id', 'slug_en'])
            ->when($q, fn ($query) => $query->where('field_name_id', 'like', "%{$q}%")
                      ->orWhere('major_id', 'like', "%{$q}%")
            )
@@ -402,9 +402,10 @@ class ContentManagementSystemController extends Controller
     public function careerDetails(Request $request, $id)
     {
         $data = Career::query()
-            ->select(['id', 'field_name_id', 'field_name_en', 'description_id', 'description_en', 'google_form_link'])
-            ->where('id', $id)
-           ->first();
+                ->select(['id', 'slug_id', 'slug_en', 'field_name_id', 'field_name_en', 'description_id', 'description_en', 'google_form_link'])
+                ->where('slug_id', $request->slug)
+                ->orWhere('slug_en', $request->slug)
+                ->first();
 
         return response()->json($data);
     }
