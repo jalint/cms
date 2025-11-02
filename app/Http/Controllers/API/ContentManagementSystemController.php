@@ -20,6 +20,7 @@ use App\Models\News;
 use App\Models\OrganizationalStructure;
 use App\Models\Parameter;
 use App\Models\Sector;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -458,6 +459,23 @@ class ContentManagementSystemController extends Controller
               $query->orderBy('created_at', $sort);
           })
           ->paginate(8);
+
+        return response()->json($data);
+    }
+
+    public function jasaDanLayanan()
+    {
+        $Jenis_Layanan_Banner = 5;
+
+        // Ambil banner yang sesuai
+        $banner = DB::table('media')
+            ->select('id', 'path')
+            ->where('category_id', $Jenis_Layanan_Banner)
+            ->first();
+
+        $data = Service::query()->first();
+
+        $data->image = $banner->path ?? null;
 
         return response()->json($data);
     }

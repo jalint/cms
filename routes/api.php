@@ -38,3 +38,8 @@ Route::get('clients', [ContentManagementSystemController::class, 'ourClients']);
  */
 Route::get('directories/categories', [ContentManagementSystemController::class, 'directoryCategories']);
 Route::get('directories', [ContentManagementSystemController::class, 'directories']);
+
+/*
+ * Jasa Dan Layanan
+ */
+Route::get('services', [ContentManagementSystemController::class, 'jasaDanLayanan']);

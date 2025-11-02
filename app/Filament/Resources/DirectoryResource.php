@@ -2,15 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use App\Models\Directory;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
 use App\Filament\Resources\DirectoryResource\Pages;
 use App\Filament\Resources\DirectoryResource\RelationManagers;
-
+use App\Models\Directory;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class DirectoryResource extends Resource
 {
@@ -57,7 +56,6 @@ class DirectoryResource extends Resource
                 //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -84,6 +82,4 @@ class DirectoryResource extends Resource
             'edit' => Pages\EditDirectory::route('/{record}/edit'),
         ];
     }
-
-
 }
