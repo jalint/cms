@@ -21,6 +21,7 @@ use App\Models\OrganizationalStructure;
 use App\Models\Parameter;
 use App\Models\Sector;
 use App\Models\Service;
+use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -476,6 +477,15 @@ class ContentManagementSystemController extends Controller
         $data = Service::query()->first();
 
         $data->image = $banner->path ?? null;
+
+        return response()->json($data);
+    }
+
+    public function jasaDanLayananCard(Request $request)
+    {
+        $data = ServiceCategory::where('slug', $request->category)->with(['tabs' => function ($query) {
+            $query->with('serviceCards');
+        }])->get();
 
         return response()->json($data);
     }
