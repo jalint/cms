@@ -27,4 +27,9 @@ class ServiceCard extends Model
     {
         return $this->belongsTo(ServiceCard::class, 'parent_id');
     }
+
+    public function children()
+    {
+        return $this->hasMany(ServiceCard::class, 'parent_id');
+    }
 }

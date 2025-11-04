@@ -21,7 +21,9 @@ use App\Models\OrganizationalStructure;
 use App\Models\Parameter;
 use App\Models\Sector;
 use App\Models\Service;
+use App\Models\ServiceCard;
 use App\Models\ServiceCategory;
+use App\Models\Tab;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -488,5 +490,49 @@ class ContentManagementSystemController extends Controller
         }])->get();
 
         return response()->json($data);
+    }
+
+    public function detailJasaDanLayananCard(Request $request)
+    {
+        $activeCard = ServiceCard::query()
+                ->where('slug_id', $request->slug)
+                ->orWhere('slug_en', $request->slug)
+                ->first();
+
+        $activeTab = Tab::query()->where('id', $activeCard->tab_id)->first();
+
+        $category = ServiceCategory::query()
+            ->select(['id', 'category_name_id', 'category_name_en', 'slug'])
+            ->where('id', $activeTab->service_category_id)
+            ->with(['tabs' => function ($query) use ($activeTab) {
+                $query->select([
+                    'id',
+                    'tab_name_id',
+                    'tab_name_en',
+                    'description_id',
+                    'description_en',
+                    'service_category_id',
+                    DB::raw("CASE WHEN id = {$activeTab->id} THEN true ELSE false END as is_active"),
+                ]);
+            }])
+            ->first();
+
+        $cards = ServiceCard::query()
+           ->where('tab_id', $activeCard->tab_id)
+           ->whereNull('parent_id')
+           ->with(['serviceMediaCards', 'children'])
+           ->get()
+           ->map(function ($card) use ($activeCard) {
+               $card->is_active = $card->id === $activeCard->id;
+
+               return $card;
+           });
+
+        $category->background = $activeCard->background;
+
+        return response()->json([
+            'header' => $category,
+            'cards' => $cards,
+        ]);
     }
 }

@@ -44,3 +44,4 @@ Route::get('directories', [ContentManagementSystemController::class, 'directorie
  */
 Route::get('services', [ContentManagementSystemController::class, 'jasaDanLayanan']);
 Route::get('services/{category}', [ContentManagementSystemController::class, 'jasaDanLayananCard']);
+Route::get('services/cards/{slug}', [ContentManagementSystemController::class, 'detailJasaDanLayananCard']);
