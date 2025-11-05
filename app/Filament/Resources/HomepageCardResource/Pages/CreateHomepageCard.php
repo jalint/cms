@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\HomepageCardResource\Pages;
 
 use App\Filament\Resources\HomepageCardResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Http;
 
 class CreateHomepageCard extends CreateRecord
 {
@@ -13,5 +13,10 @@ class CreateHomepageCard extends CreateRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    protected function afterCreate(): void
+    {
+        Http::baseUrl(config('services.jalint.base_uri'))->get('/api/revalidate?path=/&secret=JLIJayaSelalu');
     }
 }
