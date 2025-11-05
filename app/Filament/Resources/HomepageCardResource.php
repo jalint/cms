@@ -2,18 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\HomepageCard;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\FileUpload;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\HomepageCardResource\Pages;
-use App\Filament\Resources\HomepageCardResource\RelationManagers;
+use App\Models\HomepageCard;
+use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 
 class HomepageCardResource extends Resource
 {
@@ -52,12 +49,12 @@ class HomepageCardResource extends Resource
                 Forms\Components\Textarea::make('description_id')
                    ->label('Description (ID)')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()->maxLength(157),
                 Forms\Components\Textarea::make('description_en')
                  ->label('Description (EN)')
                     ->translatable()
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()->maxLength(157),
                 FileUpload::make('icon')->required()->columnSpanFull(),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
@@ -68,13 +65,12 @@ class HomepageCardResource extends Resource
     {
         return $table
             ->columns([
-            Tables\Columns\TextColumn::make('homepageService.badge_id')
-                ->label('Homepage Service')
-                ->formatStateUsing(fn ($record) => 
-                    "{$record->homepageService->badge_id} - Position: {$record->homepageService->position}"
-                )
-                ->searchable()
-                ->sortable(),
+                Tables\Columns\TextColumn::make('homepageService.badge_id')
+                    ->label('Homepage Service')
+                    ->formatStateUsing(fn ($record) => "{$record->homepageService->badge_id} - Position: {$record->homepageService->position}"
+                    )
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('metrics')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title_id')
@@ -90,9 +86,8 @@ class HomepageCardResource extends Resource
             ->filters([
                 SelectFilter::make('homepageService')
                     ->relationship('homepageService', 'badge_id')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => 
-                            "{$record->badge_id}-{$record->position}"
-                        )
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->badge_id}-{$record->position}"
+                    ),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -107,7 +102,6 @@ class HomepageCardResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 

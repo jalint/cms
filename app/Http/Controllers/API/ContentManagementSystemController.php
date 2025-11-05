@@ -485,7 +485,8 @@ class ContentManagementSystemController extends Controller
 
     public function jasaDanLayananCard(Request $request)
     {
-        $data = ServiceCategory::where('slug', $request->category)->with(['tabs' => function ($query) {
+        $data = ServiceCategory::where('slug', $request->category)
+        ->with(['tabs' => function ($query) {
             $query->with('serviceCards');
         }])->get();
 

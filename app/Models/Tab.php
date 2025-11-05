@@ -15,6 +15,6 @@ class Tab extends Model
 
     public function serviceCards()
     {
-        return $this->hasMany(ServiceCard::class)->select(['id', 'title_id', 'title_en', 'slug_id', 'slug_en', 'background', 'tab_id'])->whereNull('parent_id')->where('is_highlight', 1);
+        return $this->hasMany(ServiceCard::class)->select(['id', 'title_id', 'title_en', 'slug_id', 'slug_en', 'background', 'tab_id'])->whereNull('parent_id');
     }
 }

@@ -2,17 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use App\Models\HomepageTestimonial;
-use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\HomepageTestimonialResource\Pages;
-use App\Filament\Resources\HomepageTestimonialResource\RelationManagers;
+use App\Models\HomepageTestimonial;
+use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Http;
 
 class HomepageTestimonialResource extends Resource
 {
@@ -48,7 +46,7 @@ class HomepageTestimonialResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_active')
-                    ->required()
+                    ->required(),
             ]);
     }
 
@@ -60,12 +58,12 @@ class HomepageTestimonialResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('job_title')
                     ->searchable(),
-                   Tables\Columns\TextColumn::make('description_id')
-                    ->label('Description (ID)')
-                    ->limit(50)
-                    ->searchable(),
-                 Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('description_id')
+                 ->label('Description (ID)')
+                 ->limit(50)
+                 ->searchable(),
+                Tables\Columns\IconColumn::make('is_active')
+                   ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -76,14 +74,15 @@ class HomepageTestimonialResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->after(function () {
+                        Http::baseUrl(config('services.jalint.base_uri'))->get('/api/revalidate?path=/&secret=JLIJayaSelalu');
+                    }),
                 ]),
             ]);
     }
@@ -91,7 +90,6 @@ class HomepageTestimonialResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 
