@@ -518,8 +518,10 @@ class ContentManagementSystemController extends Controller
             }])
             ->first();
 
+        $tabIds = $category->tabs->pluck('id')->toArray();
+
         $cards = ServiceCard::query()
-           ->where('tab_id', $activeCard->tab_id)
+           ->whereIn('tab_id', $tabIds)
            ->whereNull('parent_id')
            ->with(['serviceMediaCards', 'children'])
            ->get()
