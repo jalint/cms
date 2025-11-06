@@ -18,7 +18,7 @@ class HomepageCardResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-8-tooth';
 
-    protected static ?string $navigationGroup = 'Homepage Settings';
+    protected static ?string $navigationGroup = 'Beranda';
     protected static ?string $navigationLabel = 'Cards';
 
     protected static ?int $navigationSort = 2;

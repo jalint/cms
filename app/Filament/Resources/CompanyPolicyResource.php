@@ -15,19 +15,19 @@ class CompanyPolicyResource extends Resource
 {
     protected static ?string $model = CompanyPolicy::class;
 
-    protected static ?string $navigationIcon = "heroicon-o-rectangle-stack";
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = "About Us";
+    protected static ?string $navigationGroup = 'Tentang Kami';
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make("hero_title_id")
-                ->label("Hero Title (ID)")
+            Forms\Components\TextInput::make('hero_title_id')
+                ->label('Hero Title (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("hero_title_en")
-                ->label("Hero Title (EN)")
+            Forms\Components\TextInput::make('hero_title_en')
+                ->label('Hero Title (EN)')
                 ->required()
                 ->maxLength(255),
         ]);
@@ -37,15 +37,14 @@ class CompanyPolicyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make("hero_title_id")
-                    ->label("Hero Title (ID)")
+                Tables\Columns\TextColumn::make('hero_title_id')
+                    ->label('Hero Title (ID)')
                     ->searchable(),
-                Tables\Columns\TextColumn::make("hero_title_en")
-                    ->label("Hero Title (EN)")
+                Tables\Columns\TextColumn::make('hero_title_en')
+                    ->label('Hero Title (EN)')
                     ->searchable(),
             ])
             ->filters([
-                //
             ])
             ->actions([Tables\Actions\EditAction::make()])
             ->bulkActions([
@@ -63,9 +62,9 @@ class CompanyPolicyResource extends Resource
     public static function getPages(): array
     {
         return [
-            "index" => Pages\ListCompanyPolicies::route("/"),
-            "create" => Pages\CreateCompanyPolicy::route("/create"),
-            "edit" => Pages\EditCompanyPolicy::route("/{record}/edit"),
+            'index' => Pages\ListCompanyPolicies::route('/'),
+            'create' => Pages\CreateCompanyPolicy::route('/create'),
+            'edit' => Pages\EditCompanyPolicy::route('/{record}/edit'),
         ];
     }
 }

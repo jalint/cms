@@ -17,7 +17,7 @@ class SectorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
-    protected static ?string $navigationGroup = 'Our Clients';
+    protected static ?string $navigationGroup = 'Klien Kami';
 
     public static function form(Form $form): Form
     {

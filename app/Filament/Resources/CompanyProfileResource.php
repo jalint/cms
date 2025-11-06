@@ -16,7 +16,7 @@ class CompanyProfileResource extends Resource
 
     protected static ?string $navigationIcon = "heroicon-o-building-office";
 
-    protected static ?string $navigationGroup = "About Us";
+    protected static ?string $navigationGroup = "Tentang Kami";
 
     public static function form(Form $form): Form
     {

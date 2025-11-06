@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\HomepageServiceResource\Pages;
-use App\Filament\Resources\HomepageServiceResource\RelationManagers;
 use App\Models\HomepageService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HomepageServiceResource extends Resource
 {
@@ -19,10 +16,8 @@ class HomepageServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static ?string $navigationGroup = 'Homepage Settings';
+    protected static ?string $navigationGroup = 'Beranda';
     protected static ?string $navigationLabel = 'Services';
-
-    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -77,7 +72,6 @@ class HomepageServiceResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -92,7 +86,6 @@ class HomepageServiceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 

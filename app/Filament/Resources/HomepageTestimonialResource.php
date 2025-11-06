@@ -18,7 +18,7 @@ class HomepageTestimonialResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationGroup = 'Homepage Settings';
+    protected static ?string $navigationGroup = 'Beranda';
 
     protected static ?int $navigationSort = 3;
 

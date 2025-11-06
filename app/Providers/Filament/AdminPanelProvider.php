@@ -7,6 +7,7 @@ use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -45,6 +46,24 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
             ])
+                  ->navigationGroups([
+                      NavigationGroup::make()
+                          ->label('Beranda'),
+                      //   ->icon('heroicon-o-cog-6-tooth'),
+                      NavigationGroup::make()
+                          ->label('Tentang Kami'),
+                      NavigationGroup::make()
+                          ->label('Layanan & Jasa'),
+                      NavigationGroup::make()
+                          ->label('Lainya'),
+                      //   ->icon('heroicon-o-information-circle'),
+                      //   ->icon('heroicon-o-document-text'),
+                      NavigationGroup::make()
+                          ->label('Klien Kami'),
+                      //   ->icon('heroicon-o-user-group'),
+                      NavigationGroup::make()
+                          ->label('Content'),
+                  ])
             ->profile()
             ->plugins([
                 \Awcodes\Curator\CuratorPlugin::make()
