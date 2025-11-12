@@ -9,6 +9,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rule;
 
 class CustomerDistributionLegendsRelationManager extends RelationManager
 {
@@ -18,7 +19,13 @@ class CustomerDistributionLegendsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                ColorPicker::make('hex')->label('Color')->required()->unique(),
+                ColorPicker::make('hex')->label('Color')->required()
+                           ->rules(function ($get, $record) {
+                               return [
+                                   'required',
+                                   Rule::unique('customer_distribution_legends', 'hex')->ignore($record),
+                               ];
+                           }),
                 Forms\Components\TextInput::make('legenda')
                  ->label('Legenda')
                  ->required()

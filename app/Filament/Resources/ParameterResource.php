@@ -15,35 +15,37 @@ class ParameterResource extends Resource
 {
     protected static ?string $model = Parameter::class;
 
-    protected static ?string $navigationIcon = "heroicon-o-variable";
+    protected static ?string $navigationIcon = 'heroicon-o-variable';
 
-    protected static ?string $navigationGroup = "Tentang Kami";
+    protected static ?string $navigationGroup = 'Tentang Kami';
+
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make("badge_id")
-                ->label("Badge (ID)")
+            Forms\Components\TextInput::make('badge_id')
+                ->label('Badge (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("badge_en")
-                ->label("Badge (EN)")
+            Forms\Components\TextInput::make('badge_en')
+                ->label('Badge (EN)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("title_id")
-                ->label("Title (ID)")
+            Forms\Components\TextInput::make('title_id')
+                ->label('Title (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("title_en")
-                ->label("Title (EN)")
+            Forms\Components\TextInput::make('title_en')
+                ->label('Title (EN)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\Textarea::make("description_id")
-                ->label("Description (ID)")
+            Forms\Components\Textarea::make('description_id')
+                ->label('Description (ID)')
                 ->required()
                 ->columnSpanFull(),
-            Forms\Components\Textarea::make("description_en")
-                ->label("Description (EN)")
+            Forms\Components\Textarea::make('description_en')
+                ->label('Description (EN)')
                 ->required()
                 ->columnSpanFull(),
         ]);
@@ -53,16 +55,16 @@ class ParameterResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make("badge_id")
-                    ->label("Badge (ID)")
+                Tables\Columns\TextColumn::make('badge_id')
+                    ->label('Badge (ID)')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make("title_id")
+                Tables\Columns\TextColumn::make('title_id')
                     ->limit(50)
-                    ->label("Title (ID)")
+                    ->label('Title (ID)')
                     ->searchable(),
-                Tables\Columns\TextColumn::make("description_id")
-                    ->label("Description (ID)")
+                Tables\Columns\TextColumn::make('description_id')
+                    ->label('Description (ID)')
                     ->limit(50)
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('created_at')
@@ -91,9 +93,9 @@ class ParameterResource extends Resource
     public static function getPages(): array
     {
         return [
-            "index" => Pages\ListParameters::route("/"),
-            "create" => Pages\CreateParameter::route("/create"),
-            "edit" => Pages\EditParameter::route("/{record}/edit"),
+            'index' => Pages\ListParameters::route('/'),
+            'create' => Pages\CreateParameter::route('/create'),
+            'edit' => Pages\EditParameter::route('/{record}/edit'),
         ];
     }
 }

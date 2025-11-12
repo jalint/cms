@@ -3,15 +3,19 @@
 namespace App\Providers\Filament;
 
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use App\Filament\Resources\CompanyPolicyResource;
+use App\Filament\Resources\CompanyProfileResource;
+use App\Filament\Resources\LegalDocumentResource;
+use App\Filament\Resources\OrganizationalStructureResource;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -33,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#007601',
             ])
             ->brandLogo(asset('img/jalint.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -51,7 +55,13 @@ class AdminPanelProvider extends PanelProvider
                           ->label('Beranda'),
                       //   ->icon('heroicon-o-cog-6-tooth'),
                       NavigationGroup::make()
-                          ->label('Tentang Kami'),
+                          ->label('Tentang Kami')
+                          ->items([
+                              //   NavigationItem::make('Company Profiles')->url(CompanyProfileResource::getUrl())->sort(1),
+                              //   NavigationItem::make('Organizational Structures')->url(OrganizationalStructureResource::getUrl())->sort(2),
+                              //   NavigationItem::make('Company Policies')->url(CompanyPolicyResource::getUrl())->sort(3),
+                              //   NavigationItem::make('Legal Documents')->url(LegalDocumentResource::getUrl())->sort(4),
+                          ]),
                       NavigationGroup::make()
                           ->label('Layanan & Jasa'),
                       NavigationGroup::make()

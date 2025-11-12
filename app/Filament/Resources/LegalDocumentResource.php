@@ -20,6 +20,8 @@ class LegalDocumentResource extends Resource
 
     protected static ?string $navigationGroup = 'Tentang Kami';
 
+    protected static ?int $navigationSort = 4;
+
     public static function form(Form $form): Form
     {
         return $form->schema([

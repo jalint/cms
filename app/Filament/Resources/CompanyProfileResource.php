@@ -14,59 +14,61 @@ class CompanyProfileResource extends Resource
 {
     protected static ?string $model = CompanyProfile::class;
 
-    protected static ?string $navigationIcon = "heroicon-o-building-office";
+    protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
-    protected static ?string $navigationGroup = "Tentang Kami";
+    protected static ?string $navigationGroup = 'Tentang Kami';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make("hero_title_id")
-                ->label("Hero Title (ID)")
+            Forms\Components\TextInput::make('hero_title_id')
+                ->label('Hero Title (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("hero_title_en")
-                ->label("Hero Title (EN)")
+            Forms\Components\TextInput::make('hero_title_en')
+                ->label('Hero Title (EN)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("badge_id")
-                ->label("Badge (ID)")
+            Forms\Components\TextInput::make('badge_id')
+                ->label('Badge (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("badge_en")
-                ->label("Badge (EN)")
+            Forms\Components\TextInput::make('badge_en')
+                ->label('Badge (EN)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("title_id")
-                ->label("Title (ID)")
+            Forms\Components\TextInput::make('title_id')
+                ->label('Title (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("title_en")
-                ->label("Title (EN)")
+            Forms\Components\TextInput::make('title_en')
+                ->label('Title (EN)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("description_id")
-                ->label("Description (ID)")
+            Forms\Components\TextInput::make('description_id')
+                ->label('Description (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("description_en")
-                ->label("Description (EN)")
+            Forms\Components\TextInput::make('description_en')
+                ->label('Description (EN)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\RichEditor::make("visi_id")
-                ->label("Visi (ID)")
+            Forms\Components\RichEditor::make('visi_id')
+                ->label('Visi (ID)')
                 ->required()
                 ->columnSpanFull(),
-            Forms\Components\RichEditor::make("visi_en")
-                ->label("Visi (EN)")
+            Forms\Components\RichEditor::make('visi_en')
+                ->label('Visi (EN)')
                 ->required()
                 ->columnSpanFull(),
-            Forms\Components\RichEditor::make("misi_id")
-                ->label("Misi (ID)")
+            Forms\Components\RichEditor::make('misi_id')
+                ->label('Misi (ID)')
                 ->required()
                 ->columnSpanFull(),
-            Forms\Components\RichEditor::make("misi_en")
-                ->label("Misi (EN)")
+            Forms\Components\RichEditor::make('misi_en')
+                ->label('Misi (EN)')
                 ->required()
                 ->columnSpanFull(),
         ]);
@@ -76,30 +78,30 @@ class CompanyProfileResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make("hero_title_id")
-                    ->label("Hero Title (ID)")
+                Tables\Columns\TextColumn::make('hero_title_id')
+                    ->label('Hero Title (ID)')
                     ->searchable(),
-                Tables\Columns\TextColumn::make("badge_id")
-                    ->label("Badge (ID)")
+                Tables\Columns\TextColumn::make('badge_id')
+                    ->label('Badge (ID)')
                     ->searchable(),
-                Tables\Columns\TextColumn::make("title_id")
-                    ->label("Title (ID)")
+                Tables\Columns\TextColumn::make('title_id')
+                    ->label('Title (ID)')
                     ->limit(50)
                     ->searchable(),
-                Tables\Columns\TextColumn::make("description_id")
-                    ->label("Description (ID)")
+                Tables\Columns\TextColumn::make('description_id')
+                    ->label('Description (ID)')
                     ->limit(50)
                     ->searchable(),
-                Tables\Columns\TextColumn::make("visi_id")
-                    ->label("Visi (ID)")
-                    ->limit(50)
-                    ->searchable()
-                    ->formatStateUsing(fn($state) => strip_tags($state)),
-                Tables\Columns\TextColumn::make("misi_id")
-                    ->label("Misi (ID)")
+                Tables\Columns\TextColumn::make('visi_id')
+                    ->label('Visi (ID)')
                     ->limit(50)
                     ->searchable()
-                    ->formatStateUsing(fn($state) => strip_tags($state)),
+                    ->formatStateUsing(fn ($state) => strip_tags($state)),
+                Tables\Columns\TextColumn::make('misi_id')
+                    ->label('Misi (ID)')
+                    ->limit(50)
+                    ->searchable()
+                    ->formatStateUsing(fn ($state) => strip_tags($state)),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
                 //     ->sortable()
@@ -126,9 +128,9 @@ class CompanyProfileResource extends Resource
     public static function getPages(): array
     {
         return [
-            "index" => Pages\ListCompanyProfiles::route("/"),
-            "create" => Pages\CreateCompanyProfile::route("/create"),
-            "edit" => Pages\EditCompanyProfile::route("/{record}/edit"),
+            'index' => Pages\ListCompanyProfiles::route('/'),
+            'create' => Pages\CreateCompanyProfile::route('/create'),
+            'edit' => Pages\EditCompanyProfile::route('/{record}/edit'),
         ];
     }
 }

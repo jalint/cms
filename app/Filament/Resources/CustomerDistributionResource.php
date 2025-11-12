@@ -15,27 +15,29 @@ class CustomerDistributionResource extends Resource
 {
     protected static ?string $model = CustomerDistribution::class;
 
-    protected static ?string $navigationIcon = "heroicon-o-user";
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
-    protected static ?string $navigationGroup = "Tentang Kami";
+    protected static ?string $navigationGroup = 'Tentang Kami';
+
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make("badge_id")
-                ->label("Badge (ID)")
+            Forms\Components\TextInput::make('badge_id')
+                ->label('Badge (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("badge_en")
-                ->label("Badge (EN)")
+            Forms\Components\TextInput::make('badge_en')
+                ->label('Badge (EN)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("title_id")
-                ->label("Title (ID)")
+            Forms\Components\TextInput::make('title_id')
+                ->label('Title (ID)')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make("title_en")
-                ->label("Title (EN)")
+            Forms\Components\TextInput::make('title_en')
+                ->label('Title (EN)')
                 ->required()
                 ->maxLength(255),
         ]);
@@ -45,17 +47,17 @@ class CustomerDistributionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make("badge_id")
+                Tables\Columns\TextColumn::make('badge_id')
                     ->searchable()
-                    ->label("Badge (ID)"),
-                Tables\Columns\TextColumn::make("badge_en")
-                    ->label("Badge (EN)")
+                    ->label('Badge (ID)'),
+                Tables\Columns\TextColumn::make('badge_en')
+                    ->label('Badge (EN)')
                     ->searchable(),
-                Tables\Columns\TextColumn::make("title_id")
-                    ->label("Title (ID)")
+                Tables\Columns\TextColumn::make('title_id')
+                    ->label('Title (ID)')
                     ->searchable(),
-                Tables\Columns\TextColumn::make("title_en")
-                    ->label("Title (EN)")
+                Tables\Columns\TextColumn::make('title_en')
+                    ->label('Title (EN)')
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
@@ -86,9 +88,9 @@ class CustomerDistributionResource extends Resource
     public static function getPages(): array
     {
         return [
-            "index" => Pages\ListCustomerDistributions::route("/"),
-            "create" => Pages\CreateCustomerDistribution::route("/create"),
-            "edit" => Pages\EditCustomerDistribution::route("/{record}/edit"),
+            'index' => Pages\ListCustomerDistributions::route('/'),
+            'create' => Pages\CreateCustomerDistribution::route('/create'),
+            'edit' => Pages\EditCustomerDistribution::route('/{record}/edit'),
         ];
     }
 }

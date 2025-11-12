@@ -19,6 +19,8 @@ class CompanyPolicyResource extends Resource
 
     protected static ?string $navigationGroup = 'Tentang Kami';
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form->schema([

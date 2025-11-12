@@ -13,6 +13,7 @@ use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rule;
 
 class CustomerDistributionDatasRelationManager extends RelationManager
 {
@@ -97,7 +98,12 @@ class CustomerDistributionDatasRelationManager extends RelationManager
                 // Field penampung nilai yang akan disimpan ke DB:
                 TextInput::make('name')
                     ->label('Nama Wilayah')
-                    ->unique()
+                               ->rules(function ($get, $record) {
+                                   return [
+                                       'required',
+                                       Rule::unique('customer_distribution_datas', 'name')->ignore($record),
+                                   ];
+                               })
                     ->disabled()       // tidak bisa diedit manual
                     ->dehydrated(),  // tetap disubmit ke server
 

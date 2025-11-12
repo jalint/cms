@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rule;
 
 class MilestoneDetailsRelationManager extends RelationManager
 {
@@ -26,7 +27,12 @@ class MilestoneDetailsRelationManager extends RelationManager
 
                      return array_combine($years, $years);
                  })
-                 ->unique()
+                            ->rules(function ($get, $record) {
+                                return [
+                                    'required',
+                                    Rule::unique('milestone_details', 'year')->ignore($record),
+                                ];
+                            })
                  ->searchable()
                  ->required(),
                 FileUpload::make('image')

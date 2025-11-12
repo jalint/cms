@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rule;
 
 class ParametersValuesRelationManager extends RelationManager
 {
@@ -25,7 +26,12 @@ class ParametersValuesRelationManager extends RelationManager
                      return array_combine($years, $years);
                  })
                  ->searchable()
-                 ->unique()
+                ->rules(function ($get, $record) {
+                    return [
+                        'required',
+                        Rule::unique('parameter_values', 'year')->ignore($record),
+                    ];
+                })
                  ->required(),
                 Forms\Components\TextInput::make('value')
                 ->label('Value')
