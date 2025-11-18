@@ -165,9 +165,15 @@ class ContentManagementSystemController extends Controller
     public function newsDetails(Request $request)
     {
         $data = DB::table('news')
-                ->where('slug_id', $request->slug)
-                ->orWhere('slug_en', $request->slug)
-                ->first();
+            ->where('slug_id', $request->slug)
+            ->orWhere('slug_en', $request->slug)
+            ->first();
+
+        if ($data) {
+            DB::table('news')
+                ->where('id', $data->id)
+                ->increment('view_count');
+        }
 
         return response()->json($data);
     }

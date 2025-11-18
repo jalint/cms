@@ -18,7 +18,7 @@ class OrganizationalStructureResource extends Resource
 
     protected static ?string $navigationGroup = 'Tentang Kami';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {

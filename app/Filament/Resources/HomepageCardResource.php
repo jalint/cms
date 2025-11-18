@@ -29,11 +29,12 @@ class HomepageCardResource extends Resource
             ->schema([
                 Forms\Components\Select::make('homepage_service_id')
                     ->label('Homepage Service')
-                    ->relationship('homepageService', 'badge_id') // 'name' adalah kolom yang ditampilkan
+                    ->relationship('homepageService', 'badge_id', fn ($query) => $query->where('id', '!=', 6)) // 'name' adalah kolom yang ditampilkan
                     ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->badge_id} - {$record->position}")
                     ->required()
                     ->searchable()
-                    ->preload()->columnSpanFull(),
+                    ->preload()
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('metrics')
                     ->nullable()
                     ->maxLength(255)
@@ -55,7 +56,8 @@ class HomepageCardResource extends Resource
                     ->translatable()
                     ->required()
                     ->columnSpanFull()->maxLength(157),
-                FileUpload::make('icon')->required()->columnSpanFull(),
+                FileUpload::make('icon')->label('Icon/Gambar')->required()->acceptedFileTypes(['image/png', 'image/jpeg'])
+                    ->helperText('Hanya bisa upload file PNG atau JPG.')->columnSpanFull(),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
             ]);
