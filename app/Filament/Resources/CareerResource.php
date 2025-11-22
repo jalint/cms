@@ -46,6 +46,18 @@ class CareerResource extends Resource
                     ),
                 )
                 ->maxLength(255),
+            Forms\Components\TextInput::make('slug_id')
+               ->label('Slug (ID)')
+               ->required()
+               ->disabled()
+               ->dehydrated()
+               ->maxLength(255),
+            Forms\Components\TextInput::make('slug_en')
+                ->label('Slug (EN)')
+                ->required()
+                ->disabled()
+                ->dehydrated()
+                ->maxLength(255),
             Forms\Components\TextInput::make('major_id')
                 ->label('Major (ID)')
                 ->required()
@@ -54,23 +66,11 @@ class CareerResource extends Resource
                 ->label('Major (EN)')
                    ->required()
                 ->maxLength(255),
+
             Forms\Components\TextInput::make('location')
                 ->label('Location')
                 ->required()
-                ->maxLength(255),
-            Forms\Components\TextInput::make('slug_id')
-               ->label('Slug')
-               ->required()
-               ->disabled()
-               ->dehydrated()
-               ->maxLength(255),
-            Forms\Components\TextInput::make('slug_en')
-                ->label('Slug')
-                ->required()
-                ->disabled()
-                ->dehydrated()
-                ->hidden()
-                ->maxLength(255),
+                ->maxLength(255)->columnSpanFull(),
             // Forms\Components\TextInput::make('employment_status'),
             RichEditor::make('description_id')
                 ->label('Deescription (ID)')
