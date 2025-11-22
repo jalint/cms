@@ -38,6 +38,7 @@ class CareerResource extends Resource
             Forms\Components\TextInput::make('field_name_en')
                 ->label('Field Name (EN)')
                 ->live(onBlur: true)
+                ->required()
                 ->afterStateUpdated(
                     fn (Set $set, ?string $state) => $set(
                         'slug_en',
@@ -51,6 +52,7 @@ class CareerResource extends Resource
                 ->maxLength(255),
             Forms\Components\TextInput::make('major_en')
                 ->label('Major (EN)')
+                   ->required()
                 ->maxLength(255),
             Forms\Components\TextInput::make('location')
                 ->label('Location')
@@ -77,6 +79,7 @@ class CareerResource extends Resource
             RichEditor::make('description_en')
                 ->label('Deescription (EN)')
                 ->translatable()
+                ->required()
                 ->columnSpanFull(),
             Select::make('employment_status')
                 ->options([
