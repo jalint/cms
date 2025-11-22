@@ -135,6 +135,12 @@ class ContentManagementSystemController extends Controller
     }
 
     // highlight,popular,random,latest
+    // Helper kecil untuk hapus figcaption
+    private function removeFigcaption($html)
+    {
+        return preg_replace('/<figcaption\b[^>]*>.*?<\/figcaption>/is', '', $html);
+    }
+
     public function news(Request $request)
     {
         $filter = $request->input('filter');
@@ -148,6 +154,16 @@ class ContentManagementSystemController extends Controller
                 ->limit(4)
                 ->get();
 
+            // bersihkan figcaption pada setiap item
+            foreach ($news as $item) {
+                if (isset($item->content_id)) {
+                    $item->content_id = $this->removeFigcaption($item->content_id);
+                }
+                if (isset($item->content_en)) {
+                    $item->content_en = $this->removeFigcaption($item->content_en);
+                }
+            }
+
             return response()->json($news);
         }
 
@@ -158,6 +174,16 @@ class ContentManagementSystemController extends Controller
             ->when($filter === 'random', fn ($query) => $query->inRandomOrder())
             ->when($q, fn ($query) => $query->where('title_id', 'like', "%{$q}%"))
             ->paginate($perPage);
+
+        // bersihkan figcaption untuk hasil paginasi
+        foreach ($news as $item) {
+            if (isset($item->content_id)) {
+                $item->content_id = $this->removeFigcaption($item->content_id);
+            }
+            if (isset($item->content_en)) {
+                $item->content_en = $this->removeFigcaption($item->content_en);
+            }
+        }
 
         return response()->json($news);
     }
@@ -173,6 +199,16 @@ class ContentManagementSystemController extends Controller
             DB::table('news')
                 ->where('id', $data->id)
                 ->increment('view_count');
+
+            // Hapus <figcaption>...</figcaption> dari description_id
+            if (isset($data->content_id)) {
+                $data->content_id = $this->removeFigcaption($data->content_id);
+            }
+
+            // Hapus <figcaption>...</figcaption> dari description_en
+            if (isset($data->content_en)) {
+                $data->content_en = $this->removeFigcaption($data->content_en);
+            }
         }
 
         return response()->json($data);
