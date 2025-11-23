@@ -39,7 +39,9 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#007601',
             ])
+            ->brandName('JLI')
             ->brandLogo(asset('img/jalint.png'))
+            ->favicon(asset('img/JLI.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
