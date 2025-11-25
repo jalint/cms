@@ -20,7 +20,6 @@ class EditCompanyProfile extends EditRecord
 
     protected function afterSave(): void
     {
-        Http::baseUrl(config('services.jalint.base_uri'))->get('/api/revalidate?path=/tentang-kami/profil-perusahaan&secret=JLIJayaSelalu
-');
+        Http::baseUrl(config('services.jalint.base_uri'))->get('/api/revalidate?path=/tentang-kami/profil-perusahaan&secret=JLIJayaSelalu');
     }
 }

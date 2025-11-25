@@ -12,7 +12,6 @@ class CreateCompanyProfile extends CreateRecord
 
     protected function afterCreate(): void
     {
-        Http::baseUrl(config('services.jalint.base_uri'))->get('/api/revalidate?path=/tentang-kami/profil-perusahaan&secret=JLIJayaSelalu
-');
+        Http::baseUrl(config('services.jalint.base_uri'))->get('/api/revalidate?path=/tentang-kami/profil-perusahaan&secret=JLIJayaSelalu');
     }
 }

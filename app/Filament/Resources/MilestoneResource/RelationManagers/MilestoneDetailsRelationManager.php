@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 
 class MilestoneDetailsRelationManager extends RelationManager
@@ -70,11 +71,17 @@ class MilestoneDetailsRelationManager extends RelationManager
             ->filters([
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()->createAnother(false),
+                Tables\Actions\CreateAction::make()->createAnother(false)->after(function () {
+                    Http::baseUrl(config('services.jalint.base_uri'))->get('/api/revalidate?path=/tentang-kami/profil-perusahaan&secret=JLIJayaSelalu');
+                }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->after(function () {
+                    Http::baseUrl(config('services.jalint.base_uri'))->get('/api/revalidate?path=/tentang-kami/profil-perusahaan&secret=JLIJayaSelalu');
+                }),
+                Tables\Actions\DeleteAction::make()->after(function () {
+                    Http::baseUrl(config('services.jalint.base_uri'))->get('/api/revalidate?path=/tentang-kami/profil-perusahaan&secret=JLIJayaSelalu');
+                }),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
